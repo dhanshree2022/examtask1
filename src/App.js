@@ -1,24 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import TaskList from './containers/TaskList/TaskList';
+import Task from './containers/Task/Task';
+import { Route, Routes } from 'react-router-dom';
+import Header from './components/Layout/Header';
+import { cofigureStore } from './redux/store.js';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
+  let { store, persistor } = cofigureStore();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Header />
+          <Routes>
+            <Route path='/task' element={<Task />} />
+            <Route path='/tasklist' element={<TaskList />} />
+          </Routes>
+        </PersistGate>
+      </Provider>
+    </>
+
   );
 }
 
